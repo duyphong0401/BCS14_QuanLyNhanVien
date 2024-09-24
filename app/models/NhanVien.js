@@ -18,7 +18,7 @@ class NhanVien{
             
         }else if(this.chucvu === "Trưởng phòng"){
             so = 2;
-        }else if(this.chucvu === "Nhân Viên"){
+        }else if(this.chucvu === "Nhân viên"){
             so = 1;
         }
         this.tongLuong = this.luongCB * so;
@@ -27,7 +27,7 @@ class NhanVien{
         if(this.gioLam >= 192){
             this.xepLoai = "Xuất sắc";
         }else if(this.gioLam >= 176 && this.gioLam < 192){
-            this.xepLoai = "Gioi";
+            this.xepLoai = "Giỏi";
         }else if(this.gioLam >= 160 && this.gioLam < 176){
             this.xepLoai = "Khá";
         }else if(this.gioLam < 160){
