@@ -53,6 +53,8 @@ function getLocalStorage() {
 getLocalStorage();
 
 function themNhanVien() {
+
+  
   let id = document.getElementById("tknv").value;
   let name = document.getElementById("name").value;
   let email = document.getElementById("email").value;
@@ -76,12 +78,14 @@ function themNhanVien() {
   newNv.tinhXepLoai();
   console.log(newNv);
   nvSer.addNv(newNv);
-
+  
   console.log(nvSer.arrNv);
   setLocalStorage();
   getLocalStorage();
+
+  
 }
-document.getElementById("btnThemNV").onclick = themNhanVien;
+
 
 function xoaNhanVien(idDelete) {
   console.log("ID Xóa", idDelete);
@@ -92,6 +96,7 @@ function xoaNhanVien(idDelete) {
 }
 
 function xemChiTiet(idDetail) {
+
   let nvObj = nvSer.getDetail(idDetail);
   console.log(nvObj);
   document.getElementById("tknv").value = nvObj.id;
@@ -102,6 +107,9 @@ function xemChiTiet(idDetail) {
   document.getElementById("luongCB").value = nvObj.luongCB;
   document.getElementById("chucvu").value = nvObj.chucvu;
   document.getElementById("gioLam").value = nvObj.gioLam;
+
+  document.getElementById("btnCapNhat").style.display = "inline-block"; 
+  document.getElementById("btnThemNV").style.display = "none"; 
 }
 
 function capNhat() {
@@ -131,5 +139,11 @@ function capNhat() {
 
   setLocalStorage();
   getLocalStorage();
+  
+  
 }
-document.getElementById("btnCapNhat").onclick = capNhat;
+
+document.getElementById("btnThem").onclick = function () {
+    document.getElementById("btnCapNhat").style.display = "none";
+    document.getElementById("btnThemNV").style.display = "inline-block";
+  }
