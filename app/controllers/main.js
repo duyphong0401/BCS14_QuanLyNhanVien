@@ -16,7 +16,7 @@ function hienThiTable(arrNv) {
     
                  <td>${nhanVien.ngaylam}</td>
     
-                 <td>${nhanVien.chucvu }</td>
+                 <td>${nhanVien.chucvu}</td>
 
                  <td>${nhanVien.tongLuong}</td>
 
@@ -53,8 +53,6 @@ function getLocalStorage() {
 getLocalStorage();
 
 function themNhanVien() {
-
-  
   let id = document.getElementById("tknv").value;
   let name = document.getElementById("name").value;
   let email = document.getElementById("email").value;
@@ -78,14 +76,17 @@ function themNhanVien() {
   newNv.tinhXepLoai();
   console.log(newNv);
   nvSer.addNv(newNv);
-  
+
   console.log(nvSer.arrNv);
   setLocalStorage();
   getLocalStorage();
 
-  
-}
+  document.getElementById("btnCapNhat").style.display = "none";
+  document.getElementById("btnThemNV").style.display = "inline-block";
 
+  let tieuDe = document.querySelector("#header-title");
+  tieuDe.innerHTML = "Thêm nhân viên";
+}
 
 function xoaNhanVien(idDelete) {
   console.log("ID Xóa", idDelete);
@@ -96,7 +97,6 @@ function xoaNhanVien(idDelete) {
 }
 
 function xemChiTiet(idDetail) {
-
   let nvObj = nvSer.getDetail(idDetail);
   console.log(nvObj);
   document.getElementById("tknv").value = nvObj.id;
@@ -108,8 +108,11 @@ function xemChiTiet(idDetail) {
   document.getElementById("chucvu").value = nvObj.chucvu;
   document.getElementById("gioLam").value = nvObj.gioLam;
 
-  document.getElementById("btnCapNhat").style.display = "inline-block"; 
-  document.getElementById("btnThemNV").style.display = "none"; 
+  document.getElementById("btnCapNhat").style.display = "inline-block";
+  document.getElementById("btnThemNV").style.display = "none";
+
+  let tieuDe = document.querySelector("#header-title");
+  tieuDe.innerHTML = "Xem chi tiết";
 }
 
 function capNhat() {
@@ -131,7 +134,7 @@ function capNhat() {
     luongCB,
     chucvu,
     gioLam
-  )
+  );
   console.log(objUpdate);
   nvSer.updateData(objUpdate);
   objUpdate.tinhTongLuong();
@@ -139,11 +142,7 @@ function capNhat() {
 
   setLocalStorage();
   getLocalStorage();
-  
-  
 }
 
-document.getElementById("btnThem").onclick = function () {
-    document.getElementById("btnCapNhat").style.display = "none";
-    document.getElementById("btnThemNV").style.display = "inline-block";
-  }
+document.getElementById("btnThem").onclick = themNhanVien;
+window.capNhat = capNhat;
