@@ -1,6 +1,7 @@
 let nvSer = new NhanVienService();
 
 function hienThiTable(arrNv) {
+  console.log(arrNv);
   let contentTable = "";
   arrNv.map(function (nhanVien, index) {
     console.log(nhanVien, index);
@@ -72,12 +73,17 @@ function themNhanVien() {
     chucvu,
     gioLam
   );
+  let isValid = validateNhanVien(newNv);
+
+  // Nếu có lỗi, dừng thêm nhân viên
+  if (!isValid) {
+    return;
+  }
+
   newNv.tinhTongLuong();
   newNv.tinhXepLoai();
-  console.log(newNv);
   nvSer.addNv(newNv);
 
-  console.log(nvSer.arrNv);
   setLocalStorage();
   getLocalStorage();
 
@@ -94,6 +100,72 @@ function xoaNhanVien(idDelete) {
   alert("Xóa thành công");
   setLocalStorage();
   getLocalStorage();
+}
+
+function validateNhanVien(nv) {
+  let validationErrors = [];
+
+  // Kiểm tra tài khoản
+  if (!/^\d{4,6}$/.test(nv.id)) {
+    validationErrors.push("Tài khoản tối đa 4 - 6 ký số, không để trống");
+  }
+
+  // Kiểm tra tên nhân viên
+  if (!/^[A-Za-z\s]+$/.test(nv.name) || nv.name.trim() === "") {
+    validationErrors.push("Tên nhân viên phải là chữ, không để trống");
+  }
+
+  // Kiểm tra email
+  if (
+    !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(nv.email) ||
+    nv.email.trim() === ""
+  ) {
+    validationErrors.push("Email phải đúng định dạng, không để trống");
+  }
+
+  // Kiểm tra mật khẩu
+  if (
+    !/^(?=.*[0-9])(?=.*[A-Z])(?=.*[\W_]).{6,10}$/.test(nv.password) ||
+    nv.password.trim() === ""
+  ) {
+    validationErrors.push(
+      "Mật khẩu từ 6-10 ký tự (chứa ít nhất 1 ký tự số, 1 ký tự in hoa, 1 ký tự đặc biệt), không để trống"
+    );
+  }
+
+  // Kiểm tra ngày làm
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(nv.ngaylam) || nv.ngaylam.trim() === "") {
+    validationErrors.push("Ngày làm không để trống, định dạng mm/dd/yyyy");
+  }
+
+  // Kiểm tra lương cơ bản
+  if (nv.luongCB < 1000000 || nv.luongCB > 20000000 || nv.luongCB === "") {
+    validationErrors.push(
+      "Lương cơ bản 1.000.000 - 20.000.000, không để trống"
+    );
+  }
+
+  // Kiểm tra chức vụ
+  const validPositions = ["Giám đốc", "Trưởng Phòng", "Nhân Viên"];
+  if (!validPositions.includes(nv.chucvu)) {
+    validationErrors.push(
+      "Chức vụ phải chọn chức vụ hợp lệ (Giám đốc, Trưởng Phòng, Nhân Viên)"
+    );
+  }
+
+  // Kiểm tra số giờ làm
+  if (nv.gioLam < 80 || nv.gioLam > 200 || nv.gioLam === "") {
+    validationErrors.push(
+      "Số giờ làm trong tháng 80 - 200 giờ, không để trống"
+    );
+  }
+
+  // Nếu có lỗi, hiển thị thông báo
+  if (validationErrors.length > 0) {
+    alert(validationErrors.join("\n"));
+    return false;
+  }
+  return true;
 }
 
 function xemChiTiet(idDetail) {
@@ -116,6 +188,7 @@ function xemChiTiet(idDetail) {
 }
 
 function capNhat() {
+  debugger;
   let id = document.getElementById("tknv").value;
   let name = document.getElementById("name").value;
   let email = document.getElementById("email").value;
@@ -135,7 +208,14 @@ function capNhat() {
     chucvu,
     gioLam
   );
-  console.log(objUpdate);
+
+  let isValid = validateNhanVien(objUpdate);
+
+  // Nếu có lỗi, dừng thêm nhân viên
+  if (!isValid) {
+    return;
+  }
+
   nvSer.updateData(objUpdate);
   objUpdate.tinhTongLuong();
   objUpdate.tinhXepLoai();
@@ -144,5 +224,18 @@ function capNhat() {
   getLocalStorage();
 }
 
-document.getElementById("btnThem").onclick = themNhanVien;
+function timNhanVien() {
+  let tim = document.getElementById("searchName").value;
+
+  // Gọi hàm để lấy kq tìm kiếm
+  let result = nvSer.searchData(tim);
+  // Kiểm tra lại
+  if (result.length === 0) {
+    alert("Không tìm thấy nhân viên");
+  } else {
+    hienThiTable(result);
+  }
+}
+document.getElementById("btnThemNV").onclick = themNhanVien;
+document.getElementById("btnTimNV").onclick = timNhanVien;
 window.capNhat = capNhat;

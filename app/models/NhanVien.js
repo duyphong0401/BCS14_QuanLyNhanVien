@@ -13,7 +13,7 @@ class NhanVien{
     }
     tinhTongLuong(){
         let so = 1;
-        if(this.chucvu === "Sếp"){
+        if(this.chucvu === "Giám Đốc"){
             so = 3;
             
         }else if(this.chucvu === "Trưởng phòng"){
