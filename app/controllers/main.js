@@ -1,10 +1,10 @@
 let nvSer = new NhanVienService();
 
 function hienThiTable(arrNv) {
-  console.log(arrNv);
+  
   let contentTable = "";
   arrNv.map(function (nhanVien, index) {
-    console.log(nhanVien, index);
+    
     let trNv = `
             <tr>
                 <td>${nhanVien.id}</td>
